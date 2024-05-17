@@ -1,5 +1,5 @@
-from src.masks import mask_card_numbers
+from src.widget import get_masked_data
 
 
-print(mask_card_numbers("73654108430135874305"))
-print(mask_card_numbers("7000792289606361"))
+print(get_masked_data('Счет 64686473678894779589'))
+# print(get_masked_data('7158300734726758'))
