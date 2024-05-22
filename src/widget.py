@@ -32,4 +32,4 @@ def get_date(date_string: str) -> str:
     # Распаковываем полученный список в переменные
     year, month, day = formated_date_list
 
-    return f"{day}.{month}.{day}"
+    return f"{day}.{month}.{year}"
