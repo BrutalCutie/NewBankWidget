@@ -17,8 +17,9 @@ def mask_card_numbers(numbers: str) -> str:
         hided_numbers = numbers[:6] + ("*" * 6) + numbers[-4:]
 
         # Разделяем скрытый номер по секциям в 4 цифры
+        # fmt: off
         final_card_result = " ".join([hided_numbers[start:start + 4] for start in range(0, number_length, 4)])
-
+        # fmt: on
         return final_card_result
 
     # Если номер принадлежит счёту
