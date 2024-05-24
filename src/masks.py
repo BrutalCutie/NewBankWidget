@@ -7,19 +7,16 @@ def mask_card_numbers(numbers: str) -> str:
     """
 
     number_length = len(numbers)
-    is_card = False
-
-    if number_length == 16:
-        is_card = True
 
     # Если номер принадлежит карте
-    if is_card:
-        hided_numbers = numbers[:6] + ("*" * 6) + numbers[-4:]
+    if number_length == 16:
 
+        hided_numbers = numbers[:6] + ("*" * 6) + numbers[-4:]
         # Разделяем скрытый номер по секциям в 4 цифры
         # fmt: off
         final_card_result = " ".join([hided_numbers[start:start + 4] for start in range(0, number_length, 4)])
         # fmt: on
+
         return final_card_result
 
     # Если номер принадлежит счёту
