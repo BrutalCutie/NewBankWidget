@@ -11,7 +11,7 @@ def get_masked_data(unmasked_data: str) -> str:
     nums = "".join([x for x in unmasked_data if x.isdigit()])
 
     if not operation_name or not nums:
-        raise CardInfoError()
+        raise CardInfoError
 
     return f"{operation_name} {mask_card_numbers(nums)}"
 
