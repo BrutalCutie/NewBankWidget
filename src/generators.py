@@ -1,17 +1,45 @@
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Iterator
 
 
-def filter_by_currency(operations: List[Dict], currency: str) -> Dict:
+def filter_by_currency(operations: List[Dict[Any, Any]], currency: str) -> Iterator:
     """
     Функция-генератор.
 
     :param operations: Принимает на вход список словарей
-    :param currency: Ключ словаря в operations["operationAmount"]["currency"]["code"]
+    :param currency: Ключ словаря в operation["operationAmount"]["currency"]["code"]
     :return: Возвращает итератор с ID операциями, если ID соответствует указанной currency
 
     """
 
-    pass
+    # Проверяем тип. Если это не список - выбрасываем ошибку
+    if not isinstance(operations, list):
+        raise TypeError(f"Expected {list} but {type(operations)} was given")
+
+    # Создаём временный контейнер. Предназначение: сначала мы проходим циклом по нашему списку словарей
+    # чтобы сократить ожидание после каждого вывода. Пример: имеем список длиной в 1 милл. операций.
+    # Из всего списка подходит id только первого и последнего элемента. Ожидание между первой и второй пройдет время.
+    # С контейнером мы сначала ждем прохода цикла и получаем результат.
+    iterator_list = []
+
+    for operation in operations:
+
+        # Отлавливаем ошибку, пропускаем итерацию и продолжаем цикл, если в словаре нету необходимых ключей
+        try:
+            transaction_currency = operation["operationAmount"]["currency"]["code"]
+            transaction_id = operation["id"]
+        except KeyError:
+            continue
+
+        # Если в объекте полное совпадение по искомой валюте - добавляем во временный контейнер
+        if transaction_currency == currency.upper():
+            iterator_list.append(transaction_id)
+
+    # Если временный контейнер пустой - Вызываем ошибку и сообщаем пользователю
+    if len(iterator_list) == 0:
+        raise ValueError("Nothing to yield. Iterator is empty. Check the currency")
+
+    for iterator_id in iterator_list:
+        yield iterator_id
 
 
 def transaction_descriptions(operations: List) -> str:
