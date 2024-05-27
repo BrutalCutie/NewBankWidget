@@ -23,23 +23,22 @@ def filter_by_currency(operations: List[Dict[Any, Any]], currency: str) -> Itera
 
     for operation in operations:
 
-        # Отлавливаем ошибку, пропускаем итерацию и продолжаем цикл, если в словаре нету необходимых ключей
+        # Отлавливаем ошибку, пропускаем итерацию и продолжаем цикл, если в словаре нету необходимого ключа
         try:
             transaction_currency = operation["operationAmount"]["currency"]["code"]
-            transaction_id = operation["id"]
         except KeyError:
             continue
 
         # Если в объекте полное совпадение по искомой валюте - добавляем во временный контейнер
         if transaction_currency == currency.upper():
-            iterator_list.append(transaction_id)
+            iterator_list.append(operation)
 
     # Если временный контейнер пустой - Вызываем ошибку и сообщаем пользователю
     if len(iterator_list) == 0:
         raise ValueError("Nothing to yield. Iterator is empty. Check the currency")
 
-    for iterator_id in iterator_list:
-        yield iterator_id
+    for transaction_data in iterator_list:
+        yield transaction_data
 
 
 def transaction_descriptions(operations: List) -> str:

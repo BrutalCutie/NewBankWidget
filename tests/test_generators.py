@@ -5,9 +5,9 @@ from src.generators import card_number_generator, transaction_descriptions, filt
 
 def test_filter_by_currency(transactions):
     generator = filter_by_currency(transactions, 'USD')
-    assert next(generator) == 939719570
-    assert next(generator) == 142264268
-    assert next(generator) == 895315941
+    assert next(generator)['id'] == 939719570
+    assert next(generator)['id'] == 142264268
+    assert next(generator)['id'] == 895315941
 
 
 def test_filter_skip_keyerror(transactions):
@@ -39,8 +39,4 @@ def test_filter_by_currency_wrong_type_exception_many(wrong_type):
 
 
 def test_card_number_generator():
-    pass
-
-
-def test_transaction_descriptions():
     pass
