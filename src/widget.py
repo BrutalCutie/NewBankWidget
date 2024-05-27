@@ -11,7 +11,7 @@ def get_masked_data(unmasked_data: str) -> str:
     nums = "".join([x for x in unmasked_data if x.isdigit()])
 
     if not operation_name or not nums:
-        raise CardInfoError
+        raise CardInfoError("Enter correct operation info! Expected: <card | account> <numbers>")
 
     return f"{operation_name} {mask_card_numbers(nums)}"
 
@@ -27,7 +27,7 @@ def get_date(date_string: str) -> str:
 
     # Проверка на кол-во элементов списка. Вызов исключения если кол-во не равно 3 (ожидается [год, месяц, день])
     if len(formated_date_list) != 3:
-        raise DateFormatError
+        raise DateFormatError("Enter correct datestring. Example: 2018-07-11T02:26:18.671407")
 
     # Распаковываем полученный список в переменные
     year, month, day = formated_date_list
