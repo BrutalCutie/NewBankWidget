@@ -1,4 +1,5 @@
-from typing import List, Dict, Any, Iterator
+from typing import Any, Dict, Iterator, List
+
 from src.utils import get_spaces_in_str
 
 
@@ -51,8 +52,8 @@ def transaction_descriptions(operations: List[Dict[Any, Any]]) -> Iterator:
         raise TypeError(f"Expected {list} but {type(operations)} was given")
 
     for operation in operations:
-        if operation.get('description'):
-            yield operation['description']
+        if operation.get("description"):
+            yield operation["description"]
 
 
 def card_number_generator(start: int, end: int) -> Iterator:
@@ -76,7 +77,7 @@ def card_number_generator(start: int, end: int) -> Iterator:
     """
 
     static_num = "0000000000000000"
-    for last_num in range(start, end+1):
+    for last_num in range(start, end + 1):
         last_num_len = len(str(last_num))
         new_num = static_num[:-last_num_len] + str(last_num)
         yield get_spaces_in_str(new_num)

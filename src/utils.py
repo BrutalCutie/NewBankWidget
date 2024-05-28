@@ -1,4 +1,4 @@
-def get_spaces_in_str(string: str, sep_every: int = 4, sep_symb: str = " "):
+def get_spaces_in_str(string: str, sep_every: int = 4, sep_symb: str = " ") -> str:
     """
     Функция принимает строку, вставляет sep_symb через каждые sep_every и возвращает новую строку
 
@@ -19,11 +19,3 @@ def get_spaces_in_str(string: str, sep_every: int = 4, sep_symb: str = " "):
         node += 1
 
     return new_string
-
-
-
-
-
-if __name__ == '__main__':
-    print(get_spaces_in_str("0000000000000000"))
-
