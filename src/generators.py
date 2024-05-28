@@ -33,15 +33,11 @@ def filter_by_currency(operations: List[Dict[Any, Any]], currency: str) -> Itera
         if transaction_currency == currency.upper():
             iterator_list.append(operation)
 
-    # Если временный контейнер пустой - Вызываем ошибку и сообщаем пользователю
-    if len(iterator_list) == 0:
-        raise ValueError("Nothing to yield. Iterator is empty. Check the currency")
-
     for transaction_data in iterator_list:
         yield transaction_data
 
 
-def transaction_descriptions(operations: List) -> str:
+def transaction_descriptions(operations: List[Dict[Any, Any]]) -> Iterator:
     """
     Функция-генератор.
 
@@ -50,7 +46,9 @@ def transaction_descriptions(operations: List) -> str:
 
     """
 
-    pass
+    for operation in operations:
+        if operation.get('description'):
+            yield operation['description']
 
 
 def card_number_generator(start: int, end: int) -> str:
