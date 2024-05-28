@@ -33,7 +33,7 @@ def test_filter_by_currency_empty_list_exception(transactions):
     ({'nothing': True}),
     (123,)
 ])
-def test_filter_by_currency_wrong_type_exception_many(wrong_type):
+def test_filter_by_currency_wrong_type_exception(wrong_type):
     with pytest.raises(TypeError):
         next(filter_by_currency(wrong_type, 'USD'))
 
@@ -51,5 +51,23 @@ def test_transaction_descriptions_empty_list():
         next(generator)
 
 
+@pytest.mark.parametrize("wrong_type", [
+    ('nothing',),
+    ({'nothing': True}),
+    (123,)
+])
+def test_transaction_descriptions_wrong_type(wrong_type):
+    with pytest.raises(TypeError):
+        next(transaction_descriptions(wrong_type))
+
+
 def test_card_number_generator():
-    pass
+    generator = card_number_generator(1, 3)
+    assert next(generator) == "0000 0000 0000 0001"
+    assert next(generator) == "0000 0000 0000 0002"
+    assert next(generator) == "0000 0000 0000 0003"
+
+
+def test_card_number_generator_wrong_value():
+    with pytest.raises(StopIteration):
+        assert next(card_number_generator(5, 2))

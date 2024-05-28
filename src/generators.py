@@ -1,4 +1,5 @@
 from typing import List, Dict, Any, Iterator
+from src.utils import get_spaces_in_str
 
 
 def filter_by_currency(operations: List[Dict[Any, Any]], currency: str) -> Iterator:
@@ -45,13 +46,16 @@ def transaction_descriptions(operations: List[Dict[Any, Any]]) -> Iterator:
     :return: Итератор с описаниями транзакций по ключу "description"
 
     """
+    # Проверяем тип. Если это не список - выбрасываем ошибку
+    if not isinstance(operations, list):
+        raise TypeError(f"Expected {list} but {type(operations)} was given")
 
     for operation in operations:
         if operation.get('description'):
             yield operation['description']
 
 
-def card_number_generator(start: int, end: int) -> str:
+def card_number_generator(start: int, end: int) -> Iterator:
     """
     Функция-генератор.
     Генерирует номера карт в формате XXXX XXXX XXXX XXXX, где X - цифра.
@@ -71,4 +75,8 @@ def card_number_generator(start: int, end: int) -> str:
 
     """
 
-    pass
+    static_num = "0000000000000000"
+    for last_num in range(start, end+1):
+        last_num_len = len(str(last_num))
+        new_num = static_num[:-last_num_len] + str(last_num)
+        yield get_spaces_in_str(new_num)
