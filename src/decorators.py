@@ -1,5 +1,8 @@
+import os
 from functools import wraps
 from typing import Any, Callable, Union
+
+from config import ROOT_DIR
 
 
 def log(filepath: str | None = None) -> Union[Callable, None]:
@@ -25,7 +28,8 @@ def log(filepath: str | None = None) -> Union[Callable, None]:
                 if not filepath:
                     print(success_text_data)
                 else:
-                    with open(filepath, "a", encoding="utf8") as logger_file:
+                    log_file_path = os.path.join(ROOT_DIR, filepath)
+                    with open(log_file_path, "a", encoding="utf8") as logger_file:
                         logger_file.write(success_text_data + "\n")
 
                 return result
@@ -38,10 +42,11 @@ def log(filepath: str | None = None) -> Union[Callable, None]:
                     print(f"{'END ERROR MESSAGE':=^50}")
                     return ""
                 else:
-                    with open(filepath, "a", encoding="utf8") as logger_file:
+                    log_file_path = os.path.join(ROOT_DIR, filepath)
+                    with open(log_file_path, "a", encoding="utf8") as logger_file:
                         logger_file.write(error_text_data + "\n")
 
-                    return "ERROR! Description in your log file "
+                    return "ERROR! Description in your log file"
 
         return inner
 
