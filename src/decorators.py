@@ -1,40 +1,48 @@
-import logging
-from typing import Callable, Any, Union
+from functools import wraps
+from typing import Any, Callable, Union
 
 
-def log(filepath: str | None = None, exc_info: bool = False) -> Union[Callable, None]:
+def log(filepath: str | None = None) -> Union[Callable, None]:
     """
-        Функция-декоратор.
-        Не изменяет поведение оборачиваемой функции.
-        Производит логгирование выполнения работы функции.
-        Если аргумент filepath остаётся пустым(по умолчанию None) - вывод прооиходит на консоль.
-        В ином случае создаёт файл, с логами об успешном выполнении или об ошибке которая произошла при выполнении.
+    Функция-декоратор.
+    Не изменяет поведение оборачиваемой функции.
+    Производит логгирование выполнения работы функции.
+    Если аргумент filepath остаётся пустым(по умолчанию None) - вывод прооиходит на консоль.
+    В ином случае создаёт файл, с логами об успешном выполнении или об ошибке которая произошла при выполнении.
 
-        :param filepath: по умолчанию None. Название файла для логгирования.
-        :param exc_info: по умолчанию False. Вывод подробной информации об ошибке.
-        :return: Фунцию или None в случае ошибки
-        """
+    :param filepath: по умолчанию None. Название файла для логгирования.
+    :return: Фунцию или None в случае ошибки
+    """
 
     def wrapper(func: Callable) -> Union[Callable, None]:
+        @wraps(func)
         def inner(*args: tuple, **kwargs: dict) -> Any:
-            logging.basicConfig(filename=filepath, level=10)
 
             try:
+                success_text_data = f"{func.__name__} Inputs: {args}, {kwargs} - ok"
                 result = func(*args, **kwargs)
-                logging.debug(f"{func.__name__} Inputs: {args}, {kwargs} - ok")
+
+                if not filepath:
+                    print(success_text_data)
+                else:
+                    with open(filepath, "a", encoding="utf8") as logger_file:
+                        logger_file.write(success_text_data + "\n")
+
                 return result
+
             except Exception as err:
-                logging.error(f"{func.__name__} error: {err.__class__} Inputs: {args}, {kwargs}\n{str(err)}",
-                              exc_info=exc_info)
-                return None
+                error_text_data = f"{func.__name__} error: {err.__class__} Inputs: {args}, {kwargs}\n{str(err)}"
+                if not filepath:
+                    print(f"{'ERROR':=^50}")
+                    print(error_text_data)
+                    print(f"{'END ERROR MESSAGE':=^50}")
+                    return ""
+                else:
+                    with open(filepath, "a", encoding="utf8") as logger_file:
+                        logger_file.write(error_text_data + "\n")
+
+                    return "ERROR! Description in your log file "
 
         return inner
 
     return wrapper
-
-
-if __name__ == '__main__':
-
-    @log(exc_info=False)
-    def square(x: int, y=2):
-        return x * x * y
