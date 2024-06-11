@@ -43,14 +43,14 @@ def get_transactions_list_from_file(file_path: str) -> list:
     # В случае отсутствия - вернуть сообщение и пустой список
 
     try:
-        with open(file_path, 'r', encoding='utf8') as file:
+        with open(file_path, "r", encoding="utf8") as file:
 
             # Так как with open(... нельзя считать дважды, читаем и сохраняем результат чтения в переменную
             static_file = file.read()
 
             # Проверка что файл не пустой
             if not len(static_file) > 0:
-                sys.stderr.write(f"NOTE: Expected list[dict] in file, got: nothing\n")
+                sys.stderr.write("NOTE: Expected list[dict] in file, got: nothing\n")
                 time.sleep(0.05)
                 return []
 
@@ -66,6 +66,6 @@ def get_transactions_list_from_file(file_path: str) -> list:
         return result
 
     except FileNotFoundError:
-        sys.stderr.write(f"NOTE: File not founded, returned empty list\n")
+        sys.stderr.write("NOTE: File not founded, returned empty list\n")
         time.sleep(0.05)
         return []

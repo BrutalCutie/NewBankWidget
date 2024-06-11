@@ -1,6 +1,7 @@
-import requests
-import dotenv
 import os
+
+import dotenv
+import requests
 
 
 class Converter:
@@ -9,30 +10,48 @@ class Converter:
     Создан с целью ускорить работу.
     Если обращение по API уже было выполнено и курс валюты к рублю известен:
         Код валюты и цена записываются в словарь {код валюты: цена}
-    API конвертера "Fixer API" https://apilayer.com/marketplace/fixer-api
+    API конвертера "Exchange Rates Data API" https://apilayer.com/exchangerates_data-api
     """
 
     # Загрузка конф. данных из dotenv
     dotenv.load_dotenv()
-    known_currencies = {}
+    # Контейнер для валют и их цен
+    known_currencies: dict[str, float] = {}
     CURRENCY_URL = "https://api.apilayer.com/fixer/convert?to={_to}&from={_from}&amount={amount}"
-    HEADER = {'apikey': os.getenv('CONVERTER_API')}
+    HEADER = {"apikey": os.getenv("CONVERTER_API")}
     _to = "RUB"
 
     @staticmethod
     def get_currency(code: str) -> float:
+        """
+        Функция принимает на вход код валюты (напр. EUR;USD), проверяет была ли
+        уже получена информация по данной валюте и возвращает курс по отношению к рублю.
 
+        :param code: код валюты
+        :return: курс по отношению к рублю
+        """
+
+        # Проверяем, есть ли информация по валюте в классе
         if code in Converter.known_currencies:
             return Converter.known_currencies[code]
 
+        # Если информации о такой валюте ещё не было - обращаемся к get_new_currency
         return Converter.get_new_currency(code)
 
     @staticmethod
     def get_new_currency(code: str) -> float:
-        response = requests.get(url=Converter.CURRENCY_URL.format(_to=Converter._to, _from=code, amount=1),
-                                headers=Converter.HEADER)
+        """
+        Функция принимает на вход код валюты (напр. EUR;USD), записывает данные во внутренний словарь
+        и возвращает курс code валюты по отношению к рублю
 
-        result = response.json()['result']
+        :param code: код валюты
+        :return:  курс по отношению к рублю
+        """
+        response = requests.get(
+            url=Converter.CURRENCY_URL.format(_to=Converter._to, _from=code, amount=1), headers=Converter.HEADER
+        )
+
+        result: float = response.json()["result"]
 
         Converter.known_currencies[code] = result
 
@@ -41,35 +60,25 @@ class Converter:
 
 def get_amount_in_rubles(trans_data: dict) -> float | None:
     """
+    Функция получает на вход словарь с информацией о транзакции.
+    Возвращает информацию об сумме транзакции. Если валюта происведена
+    в отличной от рубля валюте - конвертируется через вспомагательный класс Converter
 
-    :param trans_data:
-    :return:
+
+    :param trans_data: словарь с информацией о транзакции
+    :return: сумма транзакции в рублях
     """
 
+    # если информация об сумме транзакции отсутствует, возворащаем None
     if not trans_data.get("operationAmount"):
         return None
 
-    amount = float(trans_data['operationAmount']['amount'])
-    currency = trans_data['operationAmount']['currency']['code']
+    amount = float(trans_data["operationAmount"]["amount"])
+    currency = trans_data["operationAmount"]["currency"]["code"]
 
+    # если валюта транзакции не в рублях, получаем данные от Converter
     if currency != "RUB":
         currency_per_unit_price = Converter.get_currency(currency)
         converted_amount = amount * currency_per_unit_price
         return converted_amount
-    print(f"{amount} {currency}")
     return amount
-
-
-if __name__ == '__main__':
-    from src.utils import get_transactions_list_from_file
-    from config import ROOT_DIR
-    import os
-
-    file_path = os.path.join(ROOT_DIR, 'data', 'operations.json')
-
-    trans = get_transactions_list_from_file(file_path)
-
-    for i in trans:
-        if i:
-            get_amount_in_rubles(i)
-
