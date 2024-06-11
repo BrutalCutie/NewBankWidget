@@ -19,3 +19,7 @@ def get_spaces_in_str(string: str, sep_every: int = 4, sep_symb: str = " ") -> s
         node += 1
 
     return new_string
+
+
+def get_transactions_list_from_file(file_path: str) -> list:
+    pass
