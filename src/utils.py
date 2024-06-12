@@ -1,5 +1,4 @@
 import json
-import sys
 
 
 def get_spaces_in_str(string: str, sep_every: int = 4, sep_symb: str = " ") -> str:
@@ -41,7 +40,7 @@ def get_transactions_list_from_file(file_path: str) -> list:
     # В случае отсутствия файла - пустой список
     # В случае пустого файла - пустой список
     try:
-        with open(file_path, encoding='utf8') as file:
+        with open(file_path, encoding="utf8") as file:
 
             result = json.loads(file.read())
 

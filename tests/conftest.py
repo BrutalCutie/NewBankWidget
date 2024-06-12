@@ -1,7 +1,8 @@
 import json
+import os
 
 import pytest
-import os
+
 from config import ROOT_DIR
 
 
@@ -68,7 +69,7 @@ def transactions():
 
 @pytest.fixture
 def json_transactions_from_file():
-    file_path = os.path.join(ROOT_DIR, 'data', 'operations.json')
-    with open(file_path, 'r', encoding='utf8') as json_file:
+    file_path = os.path.join(ROOT_DIR, "data", "operations.json")
+    with open(file_path, "r", encoding="utf8") as json_file:
         result = json.load(json_file)
         return result
