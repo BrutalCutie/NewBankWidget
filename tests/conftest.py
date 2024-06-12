@@ -1,4 +1,8 @@
+import json
+
 import pytest
+import os
+from config import ROOT_DIR
 
 
 @pytest.fixture
@@ -60,3 +64,11 @@ def transactions():
             "to": "Счет 14211924144426031657",
         },
     ]
+
+
+@pytest.fixture
+def json_transactions_from_file():
+    file_path = os.path.join(ROOT_DIR, 'data', 'operations.json')
+    with open(file_path, 'r', encoding='utf8') as json_file:
+        result = json.load(json_file)
+        return result
