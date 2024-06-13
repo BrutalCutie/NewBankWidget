@@ -20,6 +20,8 @@ black = "^24.4.2"
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.2.1"
 pytest-cov = "^5.0.0"
+requests = "^2.32.3"
+python-dotenv = "^1.0.1"
 
 [build-system]
 requires = ["poetry-core"]
