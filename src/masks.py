@@ -6,7 +6,7 @@ from src.utils import get_spaces_in_str
 
 logger = logging.getLogger("masks")
 
-logger_file_handler = logging.FileHandler(os.path.join(LOGS_DIR, "masks.log"), encoding="utf8")
+logger_file_handler = logging.FileHandler(os.path.join(LOGS_DIR, "masks.log"), encoding="utf8", mode="w")
 logger_formatter = logging.Formatter("%(asctime)s - %(levelname)s - FUNC(%(funcName)s): %(message)s")
 logger_file_handler.setFormatter(logger_formatter)
 logger.addHandler(logger_file_handler)
@@ -22,7 +22,7 @@ def mask_card_numbers(numbers: str) -> str:
     """
 
     if not isinstance(numbers, str):
-        logging.error(f"Ошибка arg(string) must be str class, given {type(numbers)}. arg(string) = {numbers}")
+        logger.error(f"Ошибка arg(string) must be str class, given {type(numbers)}. arg(string) = {numbers}")
         raise TypeError(f"arg(string) must be str class, given {type(numbers)}")
 
     number_length = len(numbers)

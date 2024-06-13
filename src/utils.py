@@ -6,7 +6,7 @@ from config import LOGS_DIR
 
 logger = logging.getLogger("utils")
 
-logger_file_handler = logging.FileHandler(os.path.join(LOGS_DIR, "utils.log"), encoding="utf8")
+logger_file_handler = logging.FileHandler(os.path.join(LOGS_DIR, "utils.log"), encoding="utf8", mode="w")
 logger_formatter = logging.Formatter("%(asctime)s - %(levelname)s - FUNC(%(funcName)s): %(message)s")
 logger_file_handler.setFormatter(logger_formatter)
 logger.addHandler(logger_file_handler)
