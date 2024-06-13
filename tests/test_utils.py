@@ -2,6 +2,8 @@ import json
 import os
 from unittest.mock import patch
 
+import pytest
+
 from config import ROOT_DIR
 from src.utils import get_spaces_in_str, get_transactions_list_from_file
 
@@ -11,6 +13,11 @@ def test_get_spaces_in_str():
     assert get_spaces_in_str("1234567889010111") == "1234 5678 8901 0111"
     assert get_spaces_in_str("1234567889010111", 2) == "12 34 56 78 89 01 01 11"
     assert get_spaces_in_str("1234567889010111", sep_symb=",") == "1234,5678,8901,0111"
+
+
+def test_get_spaces_in_str_type_err():
+    with pytest.raises(TypeError):
+        get_spaces_in_str(1234124)
 
 
 def test_get_transactions_list_from_file(json_transactions_from_file):

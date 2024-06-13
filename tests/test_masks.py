@@ -17,3 +17,8 @@ from src.masks import mask_card_numbers
 )
 def test_mask_card_numbers(nums, expected):
     assert mask_card_numbers(nums) == expected
+
+
+def test_mask_card_numbers_type_err():
+    with pytest.raises(TypeError):
+        mask_card_numbers(1412412412312313)
