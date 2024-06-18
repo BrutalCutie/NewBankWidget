@@ -109,6 +109,14 @@ def get_transactions_list_from_file(file_path: str) -> list:
 
 
 def convert_to_json(trans_data: list[dict]) -> list[dict]:
+    """
+    Функция для конвертации словарей по данным из DataFrame из файлов .csv | .excel.
+    Возвращает список словарей с необходимым набором ключей и значений, предназначенных для работы.
+
+    :param trans_data: Неотфильтрованные данные списка словарей
+    :return: Список словарей с необходимым набором ключей и значений, предназначенных для работы
+    """
+
     tmp = []
 
     for transaction in trans_data:
