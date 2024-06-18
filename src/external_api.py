@@ -10,14 +10,14 @@ class Converter:
     Создан с целью ускорить работу.
     Если обращение по API уже было выполнено и курс валюты к рублю известен:
         Код валюты и цена записываются в словарь {код валюты: цена}
-    API конвертера "Exchange Rates Data API" https://apilayer.com/exchangerates_data-api
+    API конвертера "Exchange Rates Data API" https://apilayer.com/marketplace/exchangerates_data-api
     """
 
-    # Загрузка конф. данных из dotenv
+    # Загрузка конфиденциальных данных из dotenv
     dotenv.load_dotenv()
     # Контейнер для валют и их цен
     known_currencies: dict[str, float] = {}
-    CURRENCY_URL = "https://api.apilayer.com/fixer/convert?to={_to}&from={_from}&amount={amount}"
+    CURRENCY_URL = "https://api.apilayer.com/exchangerates_data/convert?to={_to}&from={_from}&amount={amount}"
     HEADER = {"apikey": os.getenv("CONVERTER_API")}
     _to = "RUB"
 
@@ -27,8 +27,8 @@ class Converter:
         Функция принимает на вход код валюты (напр. EUR;USD), проверяет была ли
         уже получена информация по данной валюте и возвращает курс по отношению к рублю.
 
-        :param code: код валюты
-        :return: курс по отношению к рублю
+        :param code: Код валюты
+        :return: Курс по отношению к рублю
         """
 
         # Проверяем, есть ли информация по валюте в классе
@@ -51,11 +51,17 @@ class Converter:
             url=Converter.CURRENCY_URL.format(_to=Converter._to, _from=code, amount=1), headers=Converter.HEADER
         )
 
-        result: float = response.json()["result"]
+        # if response.status_code == 200:
+        if not response.json().get('result'):
+            print(response.json())
+            print(code)
+        result: float = response.json()['result']
 
         Converter.known_currencies[code] = result
 
         return result
+        # else:
+        #     raise ValueError(f'Валюта {code} не найдена')
 
 
 def get_amount_in_rubles(trans_data: dict) -> float | None:
@@ -82,3 +88,10 @@ def get_amount_in_rubles(trans_data: dict) -> float | None:
         converted_amount = amount * currency_per_unit_price
         return converted_amount
     return amount
+
+
+if __name__ == '__main__':
+    from src.utils import get_transactions_list_from_file
+
+    for i in get_transactions_list_from_file("../data/transactions.csv"):
+        print(get_amount_in_rubles(i))
