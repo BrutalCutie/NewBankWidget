@@ -65,24 +65,24 @@ def get_transactions_list_from_file(file_path: str) -> list:
     # В случае пустого файла - пустой список
 
     try:
-        if file_extension == '.csv':
-            file_data = pd.read_csv(file_path, delimiter=";", encoding='utf8')
+        if file_extension == ".csv":
+            file_data = pd.read_csv(file_path, delimiter=";", encoding="utf8")
             # Меняем nan -> None
             file_data = file_data.replace({np.nan: None})
 
             # Конвертируем DataFrame в необходимого формата list[dict]
-            file_dict_data = file_data.to_dict('records')
+            file_dict_data = file_data.to_dict("records")
 
             result = convert_to_json(file_dict_data)
 
-        elif file_extension == '.xlsx':
+        elif file_extension == ".xlsx":
             file_data = pd.read_excel(file_path)
 
             # Меняем nan -> None
             file_data = file_data.replace({np.nan: None})
 
             # Конвертируем DataFrame в необходимого формата list[dict]
-            file_dict_data = file_data.to_dict('records')
+            file_dict_data = file_data.to_dict("records")
             result = convert_to_json(file_dict_data)
 
         else:
@@ -112,20 +112,19 @@ def convert_to_json(trans_data: list[dict]) -> list[dict]:
     tmp = []
 
     for transaction in trans_data:
-        tmp.append({
-            "id": transaction.get('id'),
-            "state": transaction.get('state'),
-            "date": transaction.get('date'),
-            "operationAmount": {
-                "amount": transaction.get('amount'),
-                "currency": {
-                    "name": transaction.get('currency_name'),
-                    "code": transaction.get('currency_code')
-                }
-            },
-            "description": transaction.get('description'),
-            "from": transaction.get('from'),
-            "to": transaction.get('to')
-        })
+        tmp.append(
+            {
+                "id": transaction.get("id"),
+                "state": transaction.get("state"),
+                "date": transaction.get("date"),
+                "operationAmount": {
+                    "amount": transaction.get("amount"),
+                    "currency": {"name": transaction.get("currency_name"), "code": transaction.get("currency_code")},
+                },
+                "description": transaction.get("description"),
+                "from": transaction.get("from"),
+                "to": transaction.get("to"),
+            }
+        )
 
     return tmp

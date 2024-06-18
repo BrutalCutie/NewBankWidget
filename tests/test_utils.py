@@ -1,6 +1,6 @@
 import json
 import os
-from unittest.mock import patch, Mock
+from unittest.mock import patch
 
 import pytest
 
@@ -53,40 +53,30 @@ def test_get_transactions_list_from_file_patch(mock_open):
 @patch("pandas.read_csv")
 def test_get_transactions_list_from_file_csv(read_csv_mock, csv_excel_transactions_from_file):
     read_csv_mock.return_value.replace.return_value.to_dict.return_value = csv_excel_transactions_from_file
-    assert get_transactions_list_from_file('test.csv') == [
+    assert get_transactions_list_from_file("test.csv") == [
         {
             "id": 1,
             "state": "EXECUTED",
             "date": "15.04.",
-            "operationAmount": {
-                "amount": "1234",
-                "currency": {
-                    "name": "Euro",
-                    "code": "EUR"
-                }
-            },
+            "operationAmount": {"amount": "1234", "currency": {"name": "Euro", "code": "EUR"}},
             "description": "Test trans",
             "from": "Estonia",
-            "to": "Russia"
-        }]
+            "to": "Russia",
+        }
+    ]
 
 
 @patch("pandas.read_excel")
 def test_get_transactions_list_from_file_excel(read_csv_mock, csv_excel_transactions_from_file):
     read_csv_mock.return_value.replace.return_value.to_dict.return_value = csv_excel_transactions_from_file
-    assert get_transactions_list_from_file('test.xlsx') == [
+    assert get_transactions_list_from_file("test.xlsx") == [
         {
             "id": 1,
             "state": "EXECUTED",
             "date": "15.04.",
-            "operationAmount": {
-                "amount": "1234",
-                "currency": {
-                    "name": "Euro",
-                    "code": "EUR"
-                }
-            },
+            "operationAmount": {"amount": "1234", "currency": {"name": "Euro", "code": "EUR"}},
             "description": "Test trans",
             "from": "Estonia",
-            "to": "Russia"
-        }]
+            "to": "Russia",
+        }
+    ]

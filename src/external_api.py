@@ -1,4 +1,5 @@
 import os
+from typing import Any
 
 import dotenv
 import requests
@@ -55,7 +56,7 @@ class Converter:
             url=Converter.CURRENCY_URL.format(_to=Converter._to, _from=code, amount=1), headers=Converter.HEADER
         )
 
-        result: float = response.json()['result']
+        result: float = response.json()["result"]
 
         Converter.known_currencies[code] = result
 
@@ -77,12 +78,12 @@ def get_amount_in_rubles(trans_data: dict) -> float | None:
     if not trans_data.get("operationAmount"):
         return None
 
-    amount = float(trans_data["operationAmount"]["amount"])
-    currency = trans_data["operationAmount"]["currency"]["code"]
+    amount: float = float(trans_data["operationAmount"]["amount"])
+    currency: str = trans_data["operationAmount"]["currency"]["code"]
 
     # если валюта транзакции не в рублях, получаем данные от Converter
     if currency != "RUB":
-        currency_per_unit_price = Converter.get_currency(currency)
-        converted_amount = amount * currency_per_unit_price
+        currency_per_unit_price: Any = Converter.get_currency(currency)
+        converted_amount: float = float(amount * currency_per_unit_price)
         return converted_amount
     return amount
