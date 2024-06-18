@@ -1,6 +1,6 @@
 import json
 import os
-from unittest.mock import patch
+from unittest.mock import patch, Mock
 
 import pytest
 
@@ -31,10 +31,9 @@ def test_get_transactions_list_from_file(json_transactions_from_file):
 
 @patch("builtins.open", create=True)
 def test_get_transactions_list_from_file_patch(mock_open):
-
     mock_file = mock_open.return_value.__enter__.return_value
 
-    # Проверка на удачную результат. Что в файле список словарей
+    # Проверка на удачный результат. Что в файле список словарей
     mock_file.read.return_value = json.dumps([{"test": "test"}])
     assert get_transactions_list_from_file("test.json") == [{"test": "test"}]
 
@@ -49,3 +48,45 @@ def test_get_transactions_list_from_file_patch(mock_open):
     # Проверка на провал "пустой файл"
     mock_file.read.return_value = ""
     assert get_transactions_list_from_file("test.json") == []
+
+
+@patch("pandas.read_csv")
+def test_get_transactions_list_from_file_csv(read_csv_mock, csv_excel_transactions_from_file):
+    read_csv_mock.return_value.replace.return_value.to_dict.return_value = csv_excel_transactions_from_file
+    assert get_transactions_list_from_file('test.csv') == [
+        {
+            "id": 1,
+            "state": "EXECUTED",
+            "date": "15.04.",
+            "operationAmount": {
+                "amount": "1234",
+                "currency": {
+                    "name": "Euro",
+                    "code": "EUR"
+                }
+            },
+            "description": "Test trans",
+            "from": "Estonia",
+            "to": "Russia"
+        }]
+
+
+@patch("pandas.read_excel")
+def test_get_transactions_list_from_file_excel(read_csv_mock, csv_excel_transactions_from_file):
+    read_csv_mock.return_value.replace.return_value.to_dict.return_value = csv_excel_transactions_from_file
+    assert get_transactions_list_from_file('test.xlsx') == [
+        {
+            "id": 1,
+            "state": "EXECUTED",
+            "date": "15.04.",
+            "operationAmount": {
+                "amount": "1234",
+                "currency": {
+                    "name": "Euro",
+                    "code": "EUR"
+                }
+            },
+            "description": "Test trans",
+            "from": "Estonia",
+            "to": "Russia"
+        }]

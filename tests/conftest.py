@@ -1,6 +1,8 @@
 import json
 import os
 
+import pandas as pd
+import numpy as np
 import pytest
 
 from config import ROOT_DIR
@@ -73,3 +75,19 @@ def json_transactions_from_file():
     with open(file_path, "r", encoding="utf8") as json_file:
         result = json.load(json_file)
         return result
+
+
+@pytest.fixture
+def csv_excel_transactions_from_file():
+    return pd.DataFrame({
+        "id": [1],
+        "state": ["EXECUTED"],
+        "date": ['15.04.'],
+        "amount": ['1234'],
+        "currency_name": ['Euro'],
+        "currency_code": ["EUR"],
+        "from": ['Estonia'],
+        "to": ["Russia"],
+        "description": ["Test trans"]
+    }).replace({np.nan: None}).to_dict('records')
+
