@@ -67,18 +67,21 @@ def get_transactions_list_from_file(file_path: str) -> list:
     try:
         if file_extension == '.csv':
             file_data = pd.read_csv(file_path, delimiter=";", encoding='utf8')
-            # Дропаем все записи, где есть незаполненные поля, которые меняются на nan( not a number )
-            file_data = file_data.dropna()
-            # Фиксим значения столбца id. При попадании nan в DataFrame, dtypes с int меняются на float
-            file_data['id'] = pd.to_numeric(file_data['id'], errors="coerce", downcast='integer')
+            # Меняем nan -> None
+            file_data = file_data.replace({np.nan: None})
 
-            # Конвертируем DataFrame в list[dict]
+            # Конвертируем DataFrame в необходимого формата list[dict]
             file_dict_data = file_data.to_dict('records')
 
             result = convert_to_json(file_dict_data)
 
         elif file_extension == '.xlsx':
             file_data = pd.read_excel(file_path)
+
+            # Меняем nan -> None
+            file_data = file_data.replace({np.nan: None})
+
+            # Конвертируем DataFrame в необходимого формата list[dict]
             file_dict_data = file_data.to_dict('records')
             result = convert_to_json(file_dict_data)
 
@@ -125,14 +128,4 @@ def convert_to_json(trans_data: list[dict]) -> list[dict]:
             "to": transaction.get('to')
         })
 
-
     return tmp
-
-
-if __name__ == '__main__':
-    filepath = "../data/transactions.csv"
-    result = get_transactions_list_from_file(filepath)
-    for i in result:
-        # print(i['from'], type(i['from']))
-        print(i)
-    # print(second_cont)

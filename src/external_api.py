@@ -22,7 +22,7 @@ class Converter:
     _to = "RUB"
 
     @staticmethod
-    def get_currency(code: str) -> float:
+    def get_currency(code: str) -> float | str:
         """
         Функция принимает на вход код валюты (напр. EUR;USD), проверяет была ли
         уже получена информация по данной валюте и возвращает курс по отношению к рублю.
@@ -31,8 +31,12 @@ class Converter:
         :return: Курс по отношению к рублю
         """
 
+        # Отсекаем транзакции без кода валюты
+        if not code:
+            return "Код валюты отсутствует"
+
         # Проверяем, есть ли информация по валюте в классе
-        if code in Converter.known_currencies:
+        elif code in Converter.known_currencies:
             return Converter.known_currencies[code]
 
         # Если информации о такой валюте ещё не было - обращаемся к get_new_currency
@@ -51,17 +55,11 @@ class Converter:
             url=Converter.CURRENCY_URL.format(_to=Converter._to, _from=code, amount=1), headers=Converter.HEADER
         )
 
-        # if response.status_code == 200:
-        if not response.json().get('result'):
-            print(response.json())
-            print(code)
         result: float = response.json()['result']
 
         Converter.known_currencies[code] = result
 
         return result
-        # else:
-        #     raise ValueError(f'Валюта {code} не найдена')
 
 
 def get_amount_in_rubles(trans_data: dict) -> float | None:
@@ -88,10 +86,3 @@ def get_amount_in_rubles(trans_data: dict) -> float | None:
         converted_amount = amount * currency_per_unit_price
         return converted_amount
     return amount
-
-
-if __name__ == '__main__':
-    from src.utils import get_transactions_list_from_file
-
-    for i in get_transactions_list_from_file("../data/transactions.csv"):
-        print(get_amount_in_rubles(i))
