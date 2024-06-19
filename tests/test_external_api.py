@@ -47,6 +47,7 @@ def test_converter_get_currency(get_currency_mock):
 
     assert Converter.get_currency("EUR") == 89.321
     assert Converter.get_currency("USD") == 89.321
+    assert Converter.get_currency(None) == "Код валюты отсутствует"
 
 
 @patch("requests.get")
