@@ -1,6 +1,7 @@
 import json
 import logging
 import os
+import re
 
 import numpy as np
 import pandas as pd
@@ -30,19 +31,10 @@ def get_spaces_in_str(string: str, sep_every: int = 4, sep_symb: str = " ") -> s
         logger.error(f"Ошибка arg(string) must be str class, given {type(string)}. arg(string) = {string}")
         raise TypeError(f"arg(string) must be str class, given {type(string)}")
 
-    new_string = ""
-    node = 0
-    for symb in string:
+    re_pattern = r"[\d*]{" + str(sep_every) + r"}"
+    new_string_list = re.findall(re_pattern, string)
 
-        if node % sep_every == 0 and node != 0:
-            new_string += sep_symb
-
-        new_string += symb
-        node += 1
-
-    logger.debug(f"Возвращена строка {new_string}")
-
-    return new_string
+    return f"{sep_symb}".join(new_string_list)
 
 
 def get_transactions_list_from_file(file_path: str) -> list:
@@ -136,3 +128,7 @@ def convert_to_json(trans_data: list[dict]) -> list[dict]:
         )
 
     return tmp
+
+
+if __name__ == "__main__":
+    print(get_spaces_in_str("1234567890123456"))

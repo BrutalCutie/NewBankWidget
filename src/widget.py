@@ -1,5 +1,5 @@
-from .custom_errors import CardInfoError, DateFormatError
-from .masks import mask_card_numbers
+from src.custom_errors import CardInfoError, DateFormatError
+from src.masks import mask_card_numbers
 
 
 def get_masked_data(unmasked_data: str) -> str:
