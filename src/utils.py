@@ -128,3 +128,7 @@ def convert_to_json(trans_data: list[dict]) -> list[dict]:
         )
 
     return tmp
+
+
+def calculate_descriptions(trans_data: list[dict]) -> dict[str, int]:
+    pass
