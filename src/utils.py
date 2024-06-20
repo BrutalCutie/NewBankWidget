@@ -128,7 +128,3 @@ def convert_to_json(trans_data: list[dict]) -> list[dict]:
         )
 
     return tmp
-
-
-if __name__ == "__main__":
-    print(get_spaces_in_str("1234567890123456"))
