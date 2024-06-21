@@ -6,7 +6,7 @@ def cprint(
     text_color: Literal["black", "red", "green", "yellow", "blue", "violet", "cyan", "default"] = "default",
     bg_color: Literal["black", "red", "green", "yellow", "blue", "violet", "cyan", "white", "default"] = "default",
     text_style: Literal["bold", "curve", "underline", "default"] = "default",
-    end: str = "\n"
+    end: str = "\n",
 ) -> None:
     """
     Функция для стилизаций сообщений выводимых в консоль

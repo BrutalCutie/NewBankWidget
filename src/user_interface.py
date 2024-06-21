@@ -27,7 +27,7 @@ class UserInterface:
         """Запуск программы при вызове"""
 
         self.start()
-        self.trans_data: list[dict] | None = None
+        self.trans_data: list[dict] = [{"": ""}]  # заглушка для mypy
 
     def start(self) -> None:
         """Приветствие и ожидание ввода от пользователя, который будет означать расширение файла"""
@@ -85,7 +85,7 @@ class UserInterface:
                 f'\nОШИБКА: Статус операции "{filter_user_input}" недоступен.\n', text_color="red", text_style="bold"
             )
 
-        self.trans_data: list[dict] = get_state(self.trans_data, filter_user_input.upper())
+        self.trans_data = get_state(self.trans_data, filter_user_input.upper())
         self.filter_by_date_question()
 
     def filter_by_date_question(self) -> None:
@@ -191,8 +191,8 @@ class UserInterface:
         for transaction in self.trans_data:
             date = get_date(transaction.get("date"))
             descr = transaction.get("description", "Нет данных")
-            from_ = get_masked_data(transaction.get("from")) if transaction.get("from") else "Нет данных"
-            to_ = get_masked_data(transaction.get("to")) if transaction.get("to") else "Нет данных"
+            from_: str = get_masked_data(transaction.get("from"))
+            to_: str = get_masked_data(transaction.get("to"))
             summ = transaction.get("operationAmount", {}).get("amount", "Нет данных")
             currency_name = transaction.get("operationAmount", {}).get("currency", {}).get("name")
 

@@ -2,8 +2,11 @@ from src.custom_errors import CardInfoError, DateFormatError
 from src.masks import mask_card_numbers
 
 
-def get_masked_data(unmasked_data: str) -> str:
+def get_masked_data(unmasked_data: str | None) -> str:
     """Функция принимает данные карты/счёта и возвращает их маски для сокрытия данных в виде строки"""
+
+    if not unmasked_data:
+        return "Нет данных"
 
     # Делим имя и номер карты/счета на две переменных. Для маскировки номера используем \
     # уже созданную функцию mask_card_numbers из другого модуля

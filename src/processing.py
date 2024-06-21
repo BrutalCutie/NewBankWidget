@@ -1,9 +1,9 @@
 from typing import Any, Dict, List
 
 
-def get_state(operations: list[dict], state: str = "EXECUTED") -> list[dict]:
+def get_state(operations: list[dict], state: str = "EXECUTED") -> list[dict] | None:
     """Функция возвращает список словарей в которых ключ state == параметру функции state(по умолчанию EXECUTED"""
-    states_list: list = [operation for operation in operations if operation.get("state") == state]
+    states_list: list[dict] = [operation for operation in operations if operation.get("state") == state]
     return states_list
 
 

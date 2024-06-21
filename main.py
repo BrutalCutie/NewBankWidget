@@ -1,7 +1,7 @@
 from src.user_interface import UserInterface
 
 
-def main():
+def main() -> None:
     """Главная функция предоставления интерфейса для работы через консоль"""
     UserInterface()
 
