@@ -4,13 +4,15 @@ from typing import Literal
 def cprint(text: str,
            text_color: Literal["black", "red", "green", "yellow", "blue", "violet", "cyan"] = "default",
            bg_color: Literal["black", "red", "green", "yellow", "blue", "violet", "cyan", "white"] = "default",
-           text_style: Literal["bold", "curve", "underline"] = "default") -> None:
+           text_style: Literal["bold", "curve", "underline"] = "default",
+           end='\n') -> None:
     """
     Функция для стилизаций сообщений выводимых в консоль
     :param text: Передаваемый текст
     :param text_color: Цвет текста
     :param bg_color: Цвет заднего фона
     :param text_style: Стиль текста
+    :param end: Символ в конце сообщения
     :return: None
     """
 
@@ -50,7 +52,7 @@ def cprint(text: str,
     print(colors['text'][text_color] +
           colors['bg'][bg_color] +
           colors['style'][text_style] +
-          text)
+          text, end=end)
 
     # Сбрасываем цвета и стили
     print('\033[0m', end='')
