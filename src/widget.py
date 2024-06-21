@@ -16,8 +16,11 @@ def get_masked_data(unmasked_data: str) -> str:
     return f"{operation_name} {mask_card_numbers(nums)}"
 
 
-def get_date(date_string: str) -> str:
+def get_date(date_string: str | None) -> str:
     """Функция принимает дату в виде строки и возращает дату в необходимом формате"""
+
+    if not date_string:
+        return 'Нет данных'
 
     # Отсекаем часы, оставляя только дату
     date = date_string.split("T", 1)[0]
