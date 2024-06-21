@@ -1,6 +1,6 @@
 import pytest
 
-from src.processing import get_by_date_operations, get_state, filter_by_descr, filter_by_currencies
+from src.processing import filter_by_currencies, filter_by_descr, get_by_date_operations, get_state
 
 
 @pytest.mark.parametrize(
@@ -55,7 +55,7 @@ def test_get_by_date_operations(operations, new_first, expected):
 
 
 def test_filter_by_descr(transactions):
-    assert filter_by_descr(transactions, 'организации') == [
+    assert filter_by_descr(transactions, "организации") == [
         {
             "id": 939719570,
             "state": "EXECUTED",
@@ -73,7 +73,7 @@ def test_filter_by_descr(transactions):
             "description": "Перевод организации",
             "from": "Visa Platinum 1246377376343588",
             "to": "Счет 14211924144426031657",
-        }
+        },
     ]
 
 
@@ -96,5 +96,5 @@ def test_filter_by_currencies(transactions):
             "description": "Перевод организации",
             "from": "Visa Platinum 1246377376343588",
             "to": "Счет 14211924144426031657",
-        }
+        },
     ]

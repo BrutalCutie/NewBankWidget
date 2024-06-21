@@ -139,10 +139,10 @@ def calculate_descriptions(trans_data: list[dict]) -> dict[str, int]:
     :return: Словарь с категориями и количество их упоминания
     """
 
-    tmp = defaultdict(int)
+    tmp: dict = defaultdict(int)
 
     for transaction in trans_data:
-        descr = transaction.get('description')
+        descr = transaction.get("description")
 
         if descr:
             tmp[descr] += 1

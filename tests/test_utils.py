@@ -5,7 +5,7 @@ from unittest.mock import patch
 import pytest
 
 from config import ROOT_DIR
-from src.utils import get_spaces_in_str, get_transactions_list_from_file, calculate_descriptions
+from src.utils import calculate_descriptions, get_spaces_in_str, get_transactions_list_from_file
 
 
 def test_get_spaces_in_str():
@@ -86,5 +86,5 @@ def test_calculate_descriptions(transactions):
     assert calculate_descriptions(transactions) == {
         "Перевод организации": 2,
         "Перевод с карты на карту": 1,
-        "Перевод со счета на счет": 2
+        "Перевод со счета на счет": 2,
     }

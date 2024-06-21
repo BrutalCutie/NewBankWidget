@@ -20,7 +20,7 @@ def get_date(date_string: str | None) -> str:
     """Функция принимает дату в виде строки и возращает дату в необходимом формате"""
 
     if not date_string:
-        return 'Нет данных'
+        return "Нет данных"
 
     # Отсекаем часы, оставляя только дату
     date = date_string.split("T", 1)[0]
