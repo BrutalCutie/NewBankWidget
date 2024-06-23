@@ -1,15 +1,15 @@
 from typing import Any, Dict, List
 
 
-def get_state(operations: list[dict], state: str = "EXECUTED") -> list[dict] | None:
+def get_state(operations: list[dict], state: str = "EXECUTED") -> list[dict]:
     """Функция возвращает список словарей в которых ключ state == параметру функции state(по умолчанию EXECUTED"""
-    states_list: list[dict] = [operation for operation in operations if operation.get("state") == state]
+    states_list: list[dict] = [operation for operation in operations if operation["state"] == state]
     return states_list
 
 
-def get_by_date_operations(operations: List[Dict[str, Any]], new_first: bool = True) -> List[Dict[str, Any]] | None:
+def get_by_date_operations(operations: List[Dict[str, Any]], new_first: bool = True) -> List[Dict[str, Any]]:
     """Функция возвращает упорядоченный список словарей по дате. По умолчанию(по убыванию)"""
-    sorted_by_date_list: None | list = sorted(operations, key=lambda op: op.get("date"), reverse=new_first)
+    sorted_by_date_list = sorted(operations, key=lambda op: op["date"], reverse=new_first)
     return sorted_by_date_list
 
 

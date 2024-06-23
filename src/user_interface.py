@@ -189,10 +189,10 @@ class UserInterface:
         cprint(f"Программа: Всего банковских операций в выборке: {trans_len}\n", text_style="bold")
 
         for transaction in self.trans_data:
-            date = get_date(transaction.get("date"))
+            date = get_date(transaction.get("date", '0000-00-00T00:00:00.00000'))
             descr = transaction.get("description", "Нет данных")
-            from_: str = get_masked_data(transaction.get("from"))
-            to_: str = get_masked_data(transaction.get("to"))
+            from_: str = get_masked_data(transaction.get("from", "Нет данных"))
+            to_: str = get_masked_data(transaction.get("to", "Нет данных"))
             summ = transaction.get("operationAmount", {}).get("amount", "Нет данных")
             currency_name = transaction.get("operationAmount", {}).get("currency", {}).get("name")
 

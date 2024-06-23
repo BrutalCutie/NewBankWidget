@@ -30,6 +30,7 @@ def test_get_date_wrong_format():
         ("Maestro 1596837868705199", "Maestro 1596 83** **** 5199"),
         ("Visa Classic 6831982476737658", "Visa Classic 6831 98** **** 7658"),
         ("Visa Platinum 8990 9221 1366 5229", "Visa Platinum 8990 92** **** 5229"),
+        (None, "Нет данных")
     ],
 )
 def test_get_masked_data(unmasked_data, expected):

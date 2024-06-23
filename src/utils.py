@@ -2,7 +2,7 @@ import json
 import logging
 import os
 import re
-from collections import defaultdict, Counter
+from collections import Counter
 
 import numpy as np
 import pandas as pd
@@ -131,7 +131,7 @@ def convert_to_json(trans_data: list[dict]) -> list[dict]:
     return tmp
 
 
-def calculate_descriptions(trans_data: list[dict], posible_caterories: list) -> dict[str, int]:
+def calculate_descriptions(trans_data: list[dict], posible_caterories: list) -> Counter[dict[str, int]]:
     """
     Функция принимает список словарей с данными о транзакциях и возвращает словарь,
     в котором ключи — это названия категорий, а значения — это количество операций в заданной в
@@ -141,6 +141,6 @@ def calculate_descriptions(trans_data: list[dict], posible_caterories: list) -> 
     :return: Словарь с категориями и количество их упоминания
     """
 
-    tmp = Counter([x.get('description') for x in trans_data if x.get('description') in posible_caterories])
+    tmp = Counter([x['description'] for x in trans_data if x['description'] in posible_caterories])
 
     return tmp
