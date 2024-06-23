@@ -96,3 +96,14 @@ def csv_excel_transactions_from_file():
         .replace({np.nan: None})
         .to_dict("records")
     )
+
+
+@pytest.fixture
+def posible_categories():
+    return [
+        "Перевод организации",
+        "Открытие вклада",
+        "Перевод со счета на счет",
+        "Перевод с карты на карту",
+        "Перевод с карты на счет",
+    ]

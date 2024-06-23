@@ -11,6 +11,7 @@ from src.widget import get_date, get_masked_data
         ("2018-10-14T08:21:33.419441", "14.10.2018"),
         ("2018-09-12T21:27:25.241689", "12.09.2018"),
         ("2018-06-30T02:08:58.425572", "30.06.2018"),
+        (None, "Нет данных"),
     ],
 )
 def test_get_date(str_date, expected):
@@ -29,6 +30,7 @@ def test_get_date_wrong_format():
         ("Maestro 1596837868705199", "Maestro 1596 83** **** 5199"),
         ("Visa Classic 6831982476737658", "Visa Classic 6831 98** **** 7658"),
         ("Visa Platinum 8990 9221 1366 5229", "Visa Platinum 8990 92** **** 5229"),
+        (None, "Нет данных"),
     ],
 )
 def test_get_masked_data(unmasked_data, expected):

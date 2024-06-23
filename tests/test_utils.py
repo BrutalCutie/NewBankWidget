@@ -5,7 +5,7 @@ from unittest.mock import patch
 import pytest
 
 from config import ROOT_DIR
-from src.utils import get_spaces_in_str, get_transactions_list_from_file
+from src.utils import calculate_descriptions, get_spaces_in_str, get_transactions_list_from_file
 
 
 def test_get_spaces_in_str():
@@ -80,3 +80,11 @@ def test_get_transactions_list_from_file_excel(read_csv_mock, csv_excel_transact
             "to": "Russia",
         }
     ]
+
+
+def test_calculate_descriptions(transactions, posible_categories):
+    assert calculate_descriptions(transactions, posible_categories) == {
+        "Перевод организации": 2,
+        "Перевод с карты на карту": 1,
+        "Перевод со счета на счет": 2,
+    }
