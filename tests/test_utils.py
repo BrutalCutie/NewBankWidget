@@ -82,8 +82,8 @@ def test_get_transactions_list_from_file_excel(read_csv_mock, csv_excel_transact
     ]
 
 
-def test_calculate_descriptions(transactions):
-    assert calculate_descriptions(transactions) == {
+def test_calculate_descriptions(transactions, posible_categories):
+    assert calculate_descriptions(transactions, posible_categories) == {
         "Перевод организации": 2,
         "Перевод с карты на карту": 1,
         "Перевод со счета на счет": 2,
