@@ -141,6 +141,6 @@ def calculate_descriptions(trans_data: list[dict], posible_caterories: list) -> 
     :return: Словарь с категориями и количество их упоминания
     """
 
-    tmp = Counter([x['description'] for x in trans_data if x['description'] in posible_caterories])
+    tmp = Counter([x["description"] for x in trans_data if x["description"] in posible_caterories])
 
     return tmp

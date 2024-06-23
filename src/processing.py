@@ -1,9 +1,10 @@
+import re
 from typing import Any, Dict, List
 
 
 def get_state(operations: list[dict], state: str = "EXECUTED") -> list[dict]:
     """Функция возвращает список словарей в которых ключ state == параметру функции state(по умолчанию EXECUTED"""
-    states_list: list[dict] = [operation for operation in operations if operation["state"] == state]
+    states_list: list[dict] = [operation for operation in operations if operation.get("state", "") == state]
     return states_list
 
 
@@ -21,8 +22,16 @@ def filter_by_descr(transactions: list[dict], search_field: str) -> list[dict]:
     :param search_field: Поле поиска в ключе description в списках транзакций
     :return: Отфильтрованный список словарей с совпадениями
     """
+    tmp = []
+    pattern = rf"{search_field}\w*"
 
-    return [x for x in transactions if search_field.lower() in x.get("description", "").lower()]
+    for transaction in transactions:
+        result = re.findall(pattern, transaction["description"], flags=re.IGNORECASE)
+
+        if result:
+            tmp.append(transaction)
+
+    return tmp
 
 
 def filter_by_currencies(transactions: list[dict], currencies: list[str]) -> list[dict]:
